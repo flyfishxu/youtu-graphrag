@@ -2311,9 +2311,10 @@ class KTRetriever:
                         for i in range(len(path) - 1):
                             u, v = path[i], path[i + 1]
                             edge_data = self.graph.get_edge_data(u, v)
-                            if edge_data and 'relation' in edge_data:
-                                relation = list(edge_data.values())[0]['relation']
-                                found_triples.append((u, relation, v))
+                            if edge_data:
+                                for attributes in edge_data.values():
+                                    if 'relation' in attributes:
+                                        found_triples.append((u, attributes['relation'], v))
                         break
             except Exception as e:
                 logger.warning(f"Error during DFS path search at node {start_node if 'start_node' in locals() else ''}: {type(e).__name__}: {e}")
